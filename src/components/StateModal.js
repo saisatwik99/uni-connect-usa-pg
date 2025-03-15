@@ -27,9 +27,9 @@ const StateModal = (props) => {
       <Modal
         {...props}
         size="lg"
-        scrollable={true}
+        scrollable={false}
         aria-labelledby="contained-modal-title-vcenter"
-        className="custom-modal"
+        className="custom-modal state-modal"
         centered
       >
         <Modal.Header closeButton>
@@ -37,24 +37,22 @@ const StateModal = (props) => {
             {stateName}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <div className="modal-content">
-            {pdfExists ? (
-              <div className="embedded-pdf-container">
-                <iframe
-                  src={`${process.env.PUBLIC_URL}${pdfPath}#toolbar=0&navpanes=0&scrollbar=0`}
-                  title={`${stateName} Information`}
-                  className="embedded-pdf"
-                  frameBorder="0"
-                  onError={handlePdfError}
-                />
-              </div>
-            ) : (
-              <div className="no-content-message">
-                <p>No detailed information is available for {stateName} at this time.</p>
-              </div>
-            )}
-          </div>
+        <Modal.Body className="state-modal-body">
+          {pdfExists ? (
+            <div className="pdf-wrapper">
+              <iframe
+                src={`${process.env.PUBLIC_URL}${pdfPath}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
+                title={`${stateName} Information`}
+                className="embedded-pdf"
+                frameBorder="0"
+                onError={handlePdfError}
+              />
+            </div>
+          ) : (
+            <div className="no-content-message">
+              <p>No detailed information is available for {stateName} at this time.</p>
+            </div>
+          )}
         </Modal.Body>
         <Modal.Footer className="modal-footer">
           {/* <Button onClick={props.onHide}>Close</Button> */}

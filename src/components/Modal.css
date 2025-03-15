@@ -34,6 +34,26 @@
   padding: 10px 10px 10px 10px;
 }
 
+/* State Modal Specific Styles */
+.state-modal .modal-dialog {
+  max-height: 90vh;
+}
+
+.state-modal-body {
+  padding: 0;
+  height: 70vh;
+  overflow: hidden;
+  background-color: white;
+}
+
+.embedded-pdf {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  background-color: white;
+}
+
 .pdf-container {
   width: 100%;
   height: 100%;
@@ -54,12 +74,6 @@
   background-color: white;
 }
 
-.embedded-pdf {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
 .no-content-message {
   display: flex;
   justify-content: center;
@@ -71,4 +85,15 @@
   background-color: #f8f8f8;
   border-radius: 5px;
   padding: 20px;
+}
+
+.state-modal .modal-content {
+  background-color: white;
+}
+
+.pdf-wrapper {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  overflow: hidden;
 }
