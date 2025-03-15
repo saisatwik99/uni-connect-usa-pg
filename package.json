@@ -1,5 +1,5 @@
 {
-  "homepage": "http://lalithkumar1512.github.io/Uniconnect",
+  "homepage": "http://saisatwik99.github.io/uni-connect-usa-pg",
   "name": "uniconnect",
   "version": "0.1.0",
   "private": true,
@@ -30,7 +30,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "predeploy": "npm run build",
+    "predeploy": "yarn build",
     "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -55,7 +55,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^6.2.0"
+    "gh-pages": "^6.3.0"
   }
 }
-

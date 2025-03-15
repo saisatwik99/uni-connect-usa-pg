@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/uni-connect-usa-pg/static/css/main.ac3aba6b.css",
+    "main.js": "/uni-connect-usa-pg/static/js/main.ee165b2b.js",
+    "index.html": "/uni-connect-usa-pg/index.html",
+    "main.ac3aba6b.css.map": "/uni-connect-usa-pg/static/css/main.ac3aba6b.css.map",
+    "main.ee165b2b.js.map": "/uni-connect-usa-pg/static/js/main.ee165b2b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ac3aba6b.css",
+    "static/js/main.ee165b2b.js"
+  ]
+}
