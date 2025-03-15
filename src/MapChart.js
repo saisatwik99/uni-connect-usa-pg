@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { geoCentroid } from "d3-geo";
 import "./style.css";
 import {
@@ -10,6 +10,7 @@ import {
   ZoomableGroup,
 } from "react-simple-maps";
 import CustomModal from "./components/CustomModal";
+import StateModal from "./components/StateModal";
 
 import allStates from "./data/allstates.json";
 import universities from "./data/universities.json";
@@ -19,6 +20,18 @@ import logos from "./data/logos.json";
 import icons from "./data/icons.json";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
+
+// List of states that have PDF content
+const statesWithContent = [
+  "Alabama", "Arizona", "Arkansas", "California", "Colorado", 
+  "Connecticut", "Florida", "Georgia", "Illinois", "Indiana", 
+  "Iowa", "Kansas", "Kentucky", "Louisiana", "Maryland", 
+  "Massachusetts", "Michigan", "Minnesota", "Mississippi", 
+  "Missouri", "Nebraska", "New Hampshire", "New Jersey", 
+  "New Mexico", "New York", "North Carolina", "Ohio", 
+  "Oklahoma", "Oregon", "Pennsylvania", "South Carolina", 
+  "Tennessee", "Utah", "Virginia", "Washington"
+];
 
 const offsets = {
   VT: [-10, -90],
@@ -36,6 +49,18 @@ const MapChart = () => {
   const [content, setContent] = useState({});
   const [hoveredState, setHoveredState] = useState(null);
   const [modalShow, setModalShow] = React.useState(false);
+  const [stateModalShow, setStateModalShow] = React.useState(false);
+  const [stateContent, setStateContent] = useState({});
+  const [clickableStates, setClickableStates] = useState({});
+
+  // Initialize clickable states on component mount
+  useEffect(() => {
+    const clickableStateMap = {};
+    allStates.forEach(state => {
+      clickableStateMap[state.val] = statesWithContent.includes(state.name);
+    });
+    setClickableStates(clickableStateMap);
+  }, []);
 
   const open = (content) => {
     setContent(content);
@@ -47,6 +72,19 @@ const MapChart = () => {
     setContent({});
   };
 
+  const openStateModal = (stateId) => {
+    const stateData = allStates.find(state => state.id === stateId);
+    if (stateData && statesWithContent.includes(stateData.name)) {
+      setStateContent(stateData);
+      setStateModalShow(true);
+    }
+  };
+
+  const closeStateModal = () => {
+    setStateModalShow(false);
+    setStateContent({});
+  };
+
   const handleStateHover = (geo) => {
     setHoveredState(geo.id);
   };
@@ -55,8 +93,18 @@ const MapChart = () => {
     setHoveredState(null);
   };
 
+  const handleStateClick = (geo) => {
+    // Only open modal if state has content
+    if (clickableStates[geo.id]) {
+      const stateId = allStates.find(s => s.val === geo.id)?.id;
+      if (stateId) {
+        openStateModal(stateId);
+      }
+    }
+  };
+
   return (
-    <div className={`map-container ${modalShow ? "blurred" : ""}`}>
+    <div className={`map-container ${modalShow || stateModalShow ? "blurred" : ""}`}>
       <ComposableMap
         projection="geoAlbersUsa"
         projectionConfig={{
@@ -78,10 +126,12 @@ const MapChart = () => {
                     key={geo.rsmKey}
                     geography={geo}
                     className={`geography ${
-                      geo.id === hoveredState ? "hovered" : ""
+                      geo.id === hoveredState ? (clickableStates[geo.id] ? "hovered" : "hovered-disabled") : ""
                     }`}
                     onMouseEnter={() => handleStateHover(geo)}
                     onMouseLeave={handleStateHoverEnd}
+                    onClick={() => handleStateClick(geo)}
+                    cursor={clickableStates[geo.id] ? "pointer" : "default"}
                   />
                 ))}
                 {geographies.map((geo) => {
@@ -193,8 +243,9 @@ const MapChart = () => {
             </Marker>
           ))}
         </ZoomableGroup>
-        <CustomModal show={modalShow} onHide={close} content={content} />
       </ComposableMap>
+      <CustomModal show={modalShow} onHide={close} content={content} />
+      <StateModal show={stateModalShow} onHide={closeStateModal} content={stateContent} />
     </div>
   );
 };
